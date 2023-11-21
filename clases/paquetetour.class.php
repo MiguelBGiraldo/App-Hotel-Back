@@ -19,7 +19,7 @@ class Paquete_Tour extends conexion
         }
         $query = "SELECT IDPAQUETETUR,NOMBRE,DESCRIPCION,PRECIO FROM " . $this->table . "  WHERE ROWNUM BETWEEN $inicio AND $cantidad";
         $datos = parent::obtenerDatos($query);
-
+        
         $salida = array();
         foreach ($datos as $ind => $usuarios) {
 

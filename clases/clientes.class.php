@@ -64,8 +64,10 @@ class clientes extends conexion
         $datos = json_decode($json, true);
 
 
-        if (!isset($datos['nombre']) || !isset($datos['apellido']) || !isset($datos['cedula']) || !isset($datos['correo']) || !isset($datos['password']))
+        if (!isset($datos['nombre']) || !isset($datos['apellido']) || !isset($datos['cedula']) || !isset($datos['correo']) || !isset($datos['password'])){
+            print "Aquii\n";
             return $_respuestas->error_400();
+        }
 
 
 

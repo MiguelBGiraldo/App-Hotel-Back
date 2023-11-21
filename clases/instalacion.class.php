@@ -74,7 +74,7 @@ class Instalacion extends conexion
             $respuesta = $_respuestas->response;
             $respuesta["result"] = array(
                 "instalacionId" => $resp,
-                "Mensaje" => "Se creó el articulo correctamente"
+                "Mensaje" => "Se creó la instalación correctamente"
             );
             return $respuesta;
         } else {
@@ -86,10 +86,10 @@ class Instalacion extends conexion
     private function insertarHotel()
     {
 
-        $query = " BEGIN 
+        $query = "BEGIN 
         INSERT INTO " . $this->table . " (IDINSTALACION,NOMBRE,ESTADO)
         values
-        ('" . $this->id . "','" . $this->nombre . "','"  .  '0'  . "'); \n";
+        ('" . $this->id . "','" . $this->nombre . "','"  .  '0'  . "');\n";
 
 
         foreach ($this->imagenes as $imagen) {
