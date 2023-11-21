@@ -86,11 +86,14 @@ class auth extends conexion
 
             $query = "SELECT IDCLIENTE FROM CLIENTE WHERE CLAVE = '{$datos['password']}' AND CORREOCLIENTE = '{$datos['usuario']}'";
             $datos = parent::obtenerDatos($query);
+            foreach ($datos as $ind => $usuarios) {
+                $salida["IDCLIENTE"] =  $usuarios['IDCLIENTE'];
+             }
             if ($datos) {
                 return array(
                     "status" => "ok",
                     "result" => array(
-                        "ID" => $datos['IDCLIENTE'],
+                        "ID" => $salida['IDCLIENTE'],
                         "rol" => 2,
                         "Estado" => true
                     )

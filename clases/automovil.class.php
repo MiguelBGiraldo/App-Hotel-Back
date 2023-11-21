@@ -37,8 +37,8 @@ class Automovil extends conexion
         foreach ($datos as $ind => $usuarios) {
             $salida[$ind]["id"] = $usuarios['IDAUTOMOVIL'];
             $salida[$ind]["marca"] = $usuarios['MARCAAUTOMOVIL'];
-            $salida[$ind]['tipo'] = $usuarios['TIPOAUTOMOVIL'];
-            $salida[$ind]['gama'] = $usuarios['GAMAAUTOMOVIL'];
+            $salida[$ind]['tipo'] = $usuarios['TIPOAUTOMOVIL'] == '1' ? 'Automovil' : ($usuarios['TIPOAUTOMOVIL'] == '2' ? 'Buseta' : 'Motocicleta');
+            $salida[$ind]['gama'] = $usuarios['GAMAAUTOMOVIL'] == '1' ? 'Alta' : ($usuarios['GAMAAUTOMOVIL'] == '2' ? 'Media' : 'Baja');
             $salida[$ind]['color'] = $usuarios['COLORAUTOMOVIL'];
             $salida[$ind]['precio'] = $usuarios['PRECIO'];
             // $salida[$ind]['imagen'] = $usuarios['IMAGEN'];
@@ -53,6 +53,22 @@ class Automovil extends conexion
         return ($salida);
     }
 
+    public function listarServicios(){
+
+        $query = "SELECT * 
+        FROM TIPOSERVICIO";
+        $datos = parent::obtenerDatos($query);
+        print_r($datos);
+        $salida = array();
+        foreach ($datos as $ind => $usuarios) {
+            $salida[$ind]["id"] = $usuarios['SERVICIOS_IDSERVICIO'];
+            $salida[$ind]["nombre"] = $usuarios['NOMBRESERVICIO']; 
+        }
+
+
+        return $salida;
+    }
+
     public function obtenerAutomovil($id)
     {
         $query = "SELECT IDAUTOMOVIL,MARCAAUTOMOVIL,TIPOAUTOMOVIL,GAMAAUTOMOVIL,COLORAUTOMOVIL,PRECIO,ESTADO FROM " . $this->table . " WHERE IDAUTOMOVIL = '$id'";
@@ -60,8 +76,8 @@ class Automovil extends conexion
         foreach ($datos as $ind => $usuario) {
             $salida["id"] = $usuario['IDAUTOMOVIL'];
             $salida["marca"] = $usuario['MARCAAUTOMOVIL'];
-            $salida['tipo'] = $usuario['TIPOAUTOMOVIL'];
-            $salida['gama'] = $usuario['GAMAAUTOMOVIL'];
+            $salida['tipo'] = $usuario['TIPOAUTOMOVIL'] == '1' ? 'Automovil' : ($usuario['TIPOAUTOMOVIL'] == '2' ? 'Buseta' : 'Motocicleta');
+            $salida['gama'] = $usuario['GAMAAUTOMOVIL'] == '1' ? 'Alta' : ($usuario['GAMAAUTOMOVIL'] == '2' ? 'Media' : 'Baja');
             $salida['color'] = $usuario['COLORAUTOMOVIL'];
             $salida['precio'] = $usuario['PRECIO'];
             // $salida['imagen'] = $usuario['IMAGEN'];
@@ -115,7 +131,7 @@ class Automovil extends conexion
         foreach ($this->imagenes as $imagen) {
             $query .= "INSERT INTO " . $this->tableImagen . " (IDIMAGEN,IDVEHICULO)
             values
-            ('" . $imagen['id'] . "', '" . $this->id  . "');\n";
+            ('" . $imagen['ID'] . "', '" . $this->id  . "');\n";
         }
 
         $query .= "COMMIT;
@@ -280,6 +296,8 @@ class Automovil extends conexion
             return 0;
         }
     }
+
+    
     
 
     // private function buscarToken(){

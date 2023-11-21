@@ -3,10 +3,10 @@ header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 require_once 'clases/respuestas.class.php';
-require_once 'clases/automovil.class.php';
+require_once 'clases/hotel-habitacion.class.php';
 
 $_respuestas = new respuestas;
-$autmovil = new Automovil;
+$habsHotel = new Hotel_Habitacion;
 
 
 
@@ -16,43 +16,28 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 
 
 
-        if ($_GET["peticion"] == 'listarVehiculos') {
+        if ($_GET["peticion"] == 'listarHabitaciones') {
 
-            $pagina = $_GET["page"];
-            $listaClientes['result'] = $autmovil->listaAutmoviles($pagina);
+            $hotel = $_GET["hotel"];
+            $listaHoteles['result'] = $habsHotel->listaHabitacionesHotel($hotel);
             header("Content-Type: application/json");
-            echo json_encode($listaClientes);
-            http_response_code(200);
-        }
-
-        if ($_GET["peticion"] == 'listarVehiculo') {
-
-            if (!isset($_GET['codigo'])) {
-                header('Content-Type: application/json');
-                $datosArray = $_respuestas->error_400();
-                echo json_encode($datosArray);
-            }
-
-            $listaClientes['result'] = $autmovil->obtenerAutomovil($_GET['codigo']);
-            header("Content-Type: application/json");
-            echo json_encode($listaClientes);
-            http_response_code(200);
-        }
-
-        if($_GET['peticion'] == 'listarServicios'){
-
-            $listaServicios['result'] = $autmovil->listarServicios();
-            header("Content-Type: application/json");
-            echo json_encode($listaServicios);
+            echo json_encode($listaHoteles);
             http_response_code(200);
         }
     }
-    
+    //else if(isset($_GET['id'])){
+    //     $autmovilID = $_GET['id'];
+    //     $datosCliente['result'] = $autmovil->obtenerAutomovil($autmovilID);
+    //     header("Content-Type: application/json");
+    //     echo json_encode($datosCliente);
+    //     http_response_code(200);
+    // }
+
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
     //recibimos los datos enviados
     $postBody = file_get_contents("php://input");
     //enviamos los datos al manejador
-    $datosArray = $autmovil->post($postBody);
+    $datosArray = $hotel->post($postBody);
     //delvovemos una respuesta 
     header('Content-Type: application/json');
     if (isset($datosArray["result"]["error_id"])) {
@@ -66,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     //recibimos los datos enviados
     $postBody = file_get_contents("php://input");
     //enviamos datos al manejador
-    $datosArray = $autmovil->put($postBody);
+    $datosArray = $hotel->put($postBody);
     //delvovemos una respuesta 
     header('Content-Type: application/json');
     if (isset($datosArray["result"]["error_id"])) {
@@ -79,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 } else if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
 
     $headers = getallheaders();
-    if (isset($headers["token"]) && isset($headers["autmovilId"])) {
+    if (isset($headers["token"]) && isset($headers["hotelId"])) {
         //recibimos los datos enviados por el header
         $send = [
             "token" => $headers["token"],
@@ -100,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     http_response_code(200);
 
     //enviamos datos al manejador
-    $datosArray = $autmovil->delete($postBody);
+    $datosArray = $hotel->delete($postBody);
     //delvovemos una respuesta 
     header('Content-Type: application/json');
     exit;

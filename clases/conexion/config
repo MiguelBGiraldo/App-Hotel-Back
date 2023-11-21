@@ -1,0 +1,10 @@
+ 
+ {
+ "conexion" : {
+
+        "server" : "localhost",
+        "user": "ANGEL",
+        "password": "1234",
+        "port" : "1521"
+    }
+ }

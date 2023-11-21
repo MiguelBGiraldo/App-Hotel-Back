@@ -32,7 +32,7 @@ class Habitacion extends conexion
         foreach ($datos as $ind => $usuarios) {
             $salida[$ind]["id"] = $usuarios['IDHABITACION'];
             $salida[$ind]["precio"] = $usuarios['PRECIOHABITACION'];
-            $salida[$ind]["nivel"] = $usuarios['NIVELHABITACION'];
+            $salida[$ind]["nivel"] = $usuarios['NIVELHABITACION'] == '1' ? "Bajo" :($usuarios['NIVELHABITACION'] == '2' ? "Medio" : "Alto");
             $salida[$ind]["cantidad"] = $usuarios['CANTIDADHABITACION'];
             $salida[$ind]['imagenes']= $this->listarImagenesHabitacion($salida[$ind]["id"]);
             $salida[$ind]['hotel'] = $this->obtenerHotel($salida[$ind]['id']);
@@ -49,7 +49,7 @@ class Habitacion extends conexion
         foreach ($datos as $ind => $usuario) {
             $salida["id"] = $usuario['IDHABITACION'];
             $salida["precio"] = $usuario['PRECIOHABITACION'];
-            $salida["nivel"] = $usuario['NIVELHABITACION'];
+            $salida["nivel"] = $usuario['NIVELHABITACION'] == '1' ? "Bajo" :($usuario['NIVELHABITACION'] == '2' ? "Medio" : "Alto");
             $salida["cantidad"] = $usuario['CANTIDADHABITACION'];
         }
         $this->id = $id;
@@ -91,10 +91,10 @@ class Habitacion extends conexion
     private function insertarHabitacion()
     {
 
-        $query = " BEGIN 
+        $query = "BEGIN 
         INSERT INTO " . $this->table . " (IDHABITACION,NIVELHABITACION,PRECIOHABITACION,CANTIDADHABITACION,ESTADO)
         values
-        ('" . $this->id . "','" . $this->nivel . "','"   . $this->precio . "','" . $this->cantidad . "','"  . '0'  . "'); \n";
+        ('" . $this->id . "','" . $this->nivel . "','"   . $this->precio . "','" . $this->cantidad . "','"  . '0'  . "');\n";
 
 
         foreach ($this->imagenes as $imagen) {
@@ -112,6 +112,7 @@ class Habitacion extends conexion
         ROLLBACK;
         END;
         ";
+        // print $query . "\n";
 
         $query = str_replace('&', '', $query);
 
@@ -304,7 +305,7 @@ class Habitacion extends conexion
 
        
         foreach ($datos as $ind => $usuario) {
-            $salida["id"] = $usuario['HOTEL_IDHOTEL'];
+            $salida["id"] = $usuario['IDHOTEL'];
         }
 
         return $salida['id'];
